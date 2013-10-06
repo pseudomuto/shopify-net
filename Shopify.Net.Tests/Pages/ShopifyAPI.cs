@@ -15,35 +15,18 @@ namespace Shopify.Net.Tests.Pages
 {
     public class ShopifyAPI
     {
-        public class GetPage : Tests.ShopifyAPI
+        public class GetPage : APITest<APIPageResponse>
         {
-            private IRestRequest _request;
             private Page _subject;
+
+            public override IRestRequest ExpectedRequest
+            {
+                get { return new RestRequest("admin/pages/1.json"); }
+            }
 
             public GetPage()
             {
-                this._apiMock.Setup(m => m.ExecuteRequest<PageResponse>(It.IsAny<IRestRequest>()))
-                    .Returns<IRestRequest>((req) =>
-                    {
-                        this._request = req;
-                        return this.MakeResponse<PageResponse>("SampleData/GetPage.json");
-                    });
-
                 this._subject = this._api.GetPage(1);
-            }
-
-            [Fact]
-            public void UsesCorrectEndpoint()
-            {
-                this._request.Resource
-                    .Should().Equal("admin/pages/1.json");
-            }
-
-            [Fact]
-            public void UsesGetMethod()
-            {
-                this._request.Method
-                    .Should().Equal(Method.GET);
             }
 
             [Fact]
@@ -76,35 +59,18 @@ namespace Shopify.Net.Tests.Pages
             }
         }
 
-        public class GetAllPages : Tests.ShopifyAPI
+        public class GetAllPages : APITest<APIPagesResponse>
         {
             private IEnumerable<Page> _subject;
-            private IRestRequest _request;
+
+            public override IRestRequest ExpectedRequest
+            {
+                get { return new RestRequest("admin/pages.json"); }
+            }
 
             public GetAllPages()
             {
-                this._apiMock.Setup(m => m.ExecuteRequest<PagesResponse>(It.IsAny<IRestRequest>()))
-                    .Returns<IRestRequest>((req) =>
-                    {
-                        this._request = req;
-                        return this.MakeResponse<PagesResponse>("SampleData/GetAllPages.json");
-                    });
-
                 this._subject = this._api.GetAllPages();
-            }
-
-            [Fact]
-            public void CallsTheCorrectEndpoint()
-            {
-                this._request.Resource
-                    .Should().Equal("admin/pages.json");
-            }
-
-            [Fact]
-            public void UsesGetMethod()
-            {
-                this._request.Method
-                    .Should().Equal(Method.GET);
             }
 
             [Fact]

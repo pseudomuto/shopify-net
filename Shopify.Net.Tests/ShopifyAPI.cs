@@ -14,32 +14,6 @@ namespace Shopify.Net.Tests
 {
     public class ShopifyAPI
     {
-        protected Mock<Net.ShopifyAPI> _apiMock = new Mock<Net.ShopifyAPI>(
-                "shopname", 
-                "apiKey", 
-                "password"
-            );
-
-        protected Net.ShopifyAPI _api;
-
-        public ShopifyAPI()
-        {
-            this._apiMock.CallBase = true;
-            this._api = this._apiMock.Object;
-        }
-
-        protected IRestResponse<TModel> MakeResponse<TModel>(string resource)
-        {
-            var json = File.ReadAllText(resource);
-            var serializer = new JsonDeserializer();
-            var response = new RestResponse<TModel>();
-
-            response.Content = json;
-            response.Data = serializer.Deserialize<TModel>(response);
-
-            return response;
-        }
-
         public class Constructor
         {
             [Fact]
@@ -47,25 +21,100 @@ namespace Shopify.Net.Tests
             {
                 Assert.Throws<ArgumentNullException>(() =>
                 {
-                    new Net.ShopifyAPI(string.Empty, "apiKey", "pass");
+                    new Net.ShopifyAPI(string.Empty, "accessToken");
                 });
             }
 
             [Fact]
-            public void RequiresAPIKey()
+            public void RequiresAccessToken()
             {
                 Assert.Throws<ArgumentNullException>(() =>
                 {
-                    new Net.ShopifyAPI("storename", string.Empty, "password");
+                    new Net.ShopifyAPI("storename", string.Empty);
+                });
+            }
+        }
+
+        public class CreatePermanentToken
+        {
+            private Mock<IRestClient> _client;
+            private IRestRequest _request;
+            private TempAuthToken _tempToken;
+            private string _permanentToken;
+
+            public CreatePermanentToken()
+            {
+                this._tempToken = new TempAuthToken("clientId", "clientSecret", "tempToken");
+
+                this._client = new Mock<IRestClient>();
+                this._client.Setup(m => m.Execute<APIAccessTokenResponse>(It.IsAny<IRestRequest>()))
+                    .Returns<IRestRequest>((request) =>
+                    {
+                        this._request = request;
+
+                        var response = new RestResponse<APIAccessTokenResponse>();
+                        response.Data = new APIAccessTokenResponse { AccessToken = "token" };
+
+                        return response;
+                    });
+
+                this._permanentToken = Net.ShopifyAPI.CreatePermanentAccessToken(
+                        "shop",
+                        this._tempToken,
+                        this._client.Object
+                    );
+            }
+
+            [Fact]
+            public void ReturnsPermanentToken()
+            {
+                this._permanentToken
+                    .Should().Equal("token");
+            }
+
+            [Fact]
+            public void RequestsCorrectEndpoint()
+            {
+                this._request.Resource
+                    .Should().Equal("admin/oauth/access_token");
+            }
+
+            [Fact]
+            public void AddsRequestParameters()
+            {
+                this._request.Parameters.Count(p => p.Name.Equals("client_id"))
+                    .Should().Equal(1);
+
+                this._request.Parameters.Count(p => p.Name.Equals("client_secret"))
+                    .Should().Equal(1);
+
+                this._request.Parameters.Count(p => p.Name.Equals("code"))
+                    .Should().Equal(1);
+            }
+
+            [Fact]
+            public void RequiresShopName()
+            {
+                Assert.Throws<ArgumentNullException>(() =>
+                {
+                    Net.ShopifyAPI.CreatePermanentAccessToken(
+                            string.Empty, 
+                            this._tempToken, 
+                            this._client.Object
+                        );
                 });
             }
 
             [Fact]
-            public void RequiresPassword()
+            public void RequiresTempAuthToken()
             {
                 Assert.Throws<ArgumentNullException>(() =>
                 {
-                    new Net.ShopifyAPI("storename", "apiKey", string.Empty);
+                    Net.ShopifyAPI.CreatePermanentAccessToken(
+                            string.Empty, 
+                            null, 
+                            this._client.Object
+                        );
                 });
             }
         }

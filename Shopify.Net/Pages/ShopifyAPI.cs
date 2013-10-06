@@ -18,7 +18,7 @@ namespace Shopify.Net
             var request = new RestRequest(string.Format(PAGE_ENDPOINT, id));
             request.RequestFormat = DataFormat.Json;
 
-            var response = this.ExecuteRequest<PageResponse>(request);
+            var response = this.ExecuteRequest<APIPageResponse>(request);
             return response.Data.Page;
         }
 
@@ -27,18 +27,18 @@ namespace Shopify.Net
             var request = new RestRequest(PAGES_ENDPOINT, Method.GET);
             request.RequestFormat = DataFormat.Json;
             
-            var response = this.ExecuteRequest<PagesResponse>(request);
+            var response = this.ExecuteRequest<APIPagesResponse>(request);
 
             return response.Data.Pages;
         }
     }
 
-    internal class PageResponse
+    public class APIPageResponse
     {
         public Page Page { get; set; }
     }
 
-    internal class PagesResponse
+    public class APIPagesResponse
     {
         public List<Page> Pages { get; set; }
     }

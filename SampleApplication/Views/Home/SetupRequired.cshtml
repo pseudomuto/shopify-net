@@ -1,20 +1,50 @@
 ﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.Title = "Setup Required";
 }
 
-<h2>Setup Required</h2>
+<h2>Setup Required - Storing Sensitive information in GitHub is a Sin!</h2>
+
+<h3>Working with a private app? <a href="#private-app">Skip This Part</a></h3>
 
 <p>
-    Storing sensitive information in GitHub is a sin. In order to run this application, execute 
-    the following commands on your system.
+    This application will use you app to authenticate this application. It will then store an
+    environment variable called <code><tt>@APIFactory.ACCESS_TOKEN_KEY</tt></code> with your 
+    access token.
+</p>
+
+@using (Html.BeginForm("setuprequired", "home", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+    <div class="form-group">
+        <label for="apiKey" class="col-lg-2 control-label">Client Id:</label>
+        <div class="col-lg-10">
+            <input name="apiKey" type="text" class="form-control input-lg" />
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label for="secretKey" class="col-lg-2 control-label">Client Secret:</label>
+        <div class="col-lg-10">
+            <input name="secretKey" type="text" class="form-control input-lg" />
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <div class="col-lg-10 pull-right">
+            <button type="submit" class="btn btn-lg btn-primary">Authorize Me!</button>
+        </div>
+    </div>    
+}
+
+<h3><a href="#" name="private-app"></a>If Working With a Private App...</h3>
+
+<p>
+    Private apps are pre-authorized (meaning you've already got a token). To use this demo with 
+    a private app, simple execute the following in a command prompt.
 </p>
 
 <pre>
     <code>
-        setx @APIFactory.STORE_KEY_NAME [your_store_name]
-        setx @APIFactory.APIKEY_KEY_NAME [your_api_key]
-        setx @APIFactory.PASSWORD_KEY_NAME [your_api_password]
+        setx @APIFactory.ACCESS_TOKEN_KEY [your_private_app_password]
     </code>
 </pre>
-
-<a href="/" class="btn btn-default">OK, I did it!</a>

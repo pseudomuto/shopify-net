@@ -8,6 +8,14 @@ namespace Shopify.Net
 {
     internal static class Guard
     {
+        public static void AgainstNull(string name, object value)
+        {
+            if (value == null)
+            {
+                throw new ArgumentNullException(name);
+            }
+        }
+
         public static void AgainstNullOrEmpty(string name, string value)
         {
             if (string.IsNullOrEmpty(value))
