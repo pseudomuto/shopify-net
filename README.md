@@ -19,4 +19,13 @@ Once authorized, the access token will be stored in an environment variable call
 If you're using a private app, you can just set the environment variable directly using your app's 
 `Password` as the access token. This will bypass the standard OAuth flow.
 
-    setx SHOPIFY_NET_TOKEN <your_private_app_password>
+	setx SHOPIFY_NET_TOKEN <your_private_app_password>
+
+## Basic Usage
+
+All you need to start using the API is your store name and your access token.
+
+	var api = ShopifyAPI("YOUR_STORE_NAME", "YOUR_ACCESS_TOKEN");
+	var pages = api.GetAllPages();
+	...
+	...
