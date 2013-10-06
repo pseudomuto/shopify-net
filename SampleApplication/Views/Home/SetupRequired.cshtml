@@ -1,0 +1,20 @@
+﻿@{
+    ViewBag.Title = "Setup Required";
+}
+
+<h2>Setup Required</h2>
+
+<p>
+    Storing sensitive information in GitHub is a sin. In order to run this application, execute 
+    the following commands on your system.
+</p>
+
+<pre>
+    <code>
+        setx @APIFactory.STORE_KEY_NAME [your_store_name]
+        setx @APIFactory.APIKEY_KEY_NAME [your_api_key]
+        setx @APIFactory.PASSWORD_KEY_NAME [your_api_password]
+    </code>
+</pre>
+
+<a href="/" class="btn btn-default">OK, I did it!</a>

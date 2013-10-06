@@ -1,0 +1,14 @@
+﻿{
+  "page": {
+      "author": "Shopify",
+      "body_html": "<p>The <strong>About Us<\/strong> page of your shop is vital because it&#8217;s where users go when first trying to determine a level of trust.  Since trust is such an important part of selling online, it&#8217;s a good idea to give people a fair amount information about yourself and your shop.  Here are a few things you should touch on:<\/p>\n<ul>\n\t<li>Who you are<\/li>\n\t<li>Why you sell the items you sell<\/li>\n\t<li>Where you are located<\/li>\n\t<li>How long you have been in business<\/li>\n\t<li>How long you have been running your online shop<\/li>\n\t<li>Who are the people on your team<\/li>\n<\/ul>\n<p>To edit this information you can go to the <a href=\"\/admin\/pages\">Blogs &amp; Pages Tab<\/a> of the administration menu.<\/p>",
+      "created_at": "2013-09-09T22:39:25-05:00",
+      "handle": "about-us",
+      "id": 11272083,
+      "published_at": "2013-09-09T22:39:25-05:00",
+      "shop_id": 2671631,
+      "template_suffix": null,
+      "title": "About Us",
+      "updated_at": "2013-09-09T22:39:25-05:00"
+    }
+}

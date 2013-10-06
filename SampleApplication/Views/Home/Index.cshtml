@@ -1,0 +1,18 @@
+﻿@model Shopify.Net.ShopifyAPI
+@{
+    ViewBag.Title = "Shopify.NET Sample Application";
+}
+
+<h2>The Sample App</h2>
+
+<p>
+    Using this API you can work with Pages and other content for your <a href="http://www.shopify.com/">Shopify&trade;</a> store.
+</p>
+
+<h3>Pages</h3>
+<ul>
+    @foreach (var page in Model.GetAllPages()) 
+    { 
+        <li>@page.Title</li>
+    }
+</ul>
